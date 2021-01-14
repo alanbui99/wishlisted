@@ -1,0 +1,29 @@
+{% extends './base.html' %}
+{% load static %}
+{% block title%} Home {% endblock %}
+{% block content%}
+<main role="main" class="text-center mt-5">
+    <h1 class="display-4">Never miss a price drop!</h1>
+    <p class="text-secondary">
+        <small>
+            We will notify you the moment there’s a better price on <img src="{% static 'tracker_app/icons/amazon.svg' %}"> 
+            items you can’t stop thinking about.
+        </small>
+    </p>
+
+    <div class="row">
+        <div class="col-sm mt-2">
+            <a href="{% url 'register' %}" class="text-decoration-none">
+                <button type="button" class="btn btn-block btn-primary">Get started</button>
+            </a>
+        </div>
+        <div class="col-sm mt-2">
+            <a href="{% url 'home' %}" class="text-decoration-none">
+                <button type="button" class="btn btn-block btn-outline-primary">View currently tracked items</button>
+            </a>
+        </div>
+    </div>
+
+    </div>
+</main>
+{% endblock %}
