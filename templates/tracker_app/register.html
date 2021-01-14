@@ -1,0 +1,45 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title%} Register {% endblock %}
+
+{% block content%}
+<div class="card shadow-sm text-dark">
+    <div class="card-header">
+        <h4 class="my-0 font-weight-normal text-center">Start Tracking A New Item</h4>
+    </div>
+    <div class="card-body form-group">
+        <form method="POST" onsubmit="displaySpinner()">
+            {% csrf_token %}
+            {% for field in form %}
+                <p class="text-danger">{{ field.errors.as_text }}</p>
+                {% if field.name == 'desired_price' %}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    {{ field }}    
+                </div>
+                {% else %}
+                <!-- <div class="form-group"> -->
+                    {{ field.label_tag }}
+                    {{ field }}    
+                <!-- </div> -->
+                {% endif %}
+            {% endfor %}
+            <button id="submit" class="btn btn-primary w-100 mt-3" type="submit">Register</button>
+            <!-- <button class="btn btn-primary w-100 mt-3" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span>Scanning the item...</span>
+            </button> -->
+        </form>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %} 
+
+<script type="text/javascript" src="../../static/tracker_app/js/register.js"></script>
+
+{% endblock %}
+

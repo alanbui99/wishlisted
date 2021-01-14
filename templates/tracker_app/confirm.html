@@ -1,0 +1,24 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title%} Confirm {% endblock %}
+
+{% block content%}
+
+<div class="card shadow-sm text-dark">
+    <div class="card-header">
+        <h4 class="my-0 font-weight-normal text-center">Tracking Confirmation</h4>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">We have started tracking the following Amazon item for you:</h5>
+        <p class="card-text"><i>{{ details.item }}</i></p>
+        <h6 class="card-subtitle mb-2 text-muted">Current price: ${{ details.current_price }}</h6>
+        <p class="card-text">You will be notified by email later when the price {{ item.notify_when}}
+            {% if item.desired_price %} 
+            ${{item.desired_price}}
+            {% endif %}
+            .
+        </p>
+    </div>
+
+{% endblock%}
