@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import uuid
 class Item(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    url = models.URLField()
+    url = models.URLField(max_length=500)
     notify_when = models.CharField(
         max_length=50,
         choices=(
