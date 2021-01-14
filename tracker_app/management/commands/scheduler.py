@@ -6,20 +6,21 @@ from tracker_app.scraper import scrape, send_mail
 class Command(BaseCommand):
     def handle(self, *args, **options):
         while True:
+            # run every 3 hour
+            if time.time() % 10800 == 0:
+                try:
+                    all_items = Item.objects.all()
+                    if len(all_items) > 0:
+                        for item in all_items:
+                            payload = self.track_and_email(item)
+                            self.record(item, payload)
+                    else:
+                        print('no item to track')
+                except Exception as e: 
+                    print(str(e))
 
-            try:
-                all_items = Item.objects.all()
-                if len(all_items) > 0:
-                    for item in all_items:
-                        payload = self.track_and_email(item)
-                        self.record(item, payload)
-                else:
-                    print('no item to track')
-            except Exception as e: 
-                print(str(e))
-                
-            print('sleeping...')
-            time.sleep(10800)
+                print('sleeping...')
+                time.sleep(10800)
     
     def track_and_email(self, item):
         try:
