@@ -4,21 +4,36 @@
 {% block title%} Confirm {% endblock %}
 
 {% block content%}
+<div class="row">
+    <section class="col-md-5 d-none d-md-flex justify-content-center">
+        <img src="{% static 'tracker_app/images/clip-1016.png' %}" 
+        class="img-fluid" style="max-height: 60%">
+    </section>
+    <section class="col-md-7">
+        <div class="card m-auto shadow-sm border-secondary" style="max-width: 32rem;">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">Tracking Confirmation</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">The following
+                    <img src="{% static 'tracker_app/images/amazon.png' %}" width="32" height="32" alt="Amazon"> 
+                    item is being tracked:</h5>
+                <img class="card-img-top" style="max-height: 500px;"
+                src="{{ details.landing_image }}" alt="Landing image">
+                <p class="card-text"><i>{{ details.item }}</i></p>
+                <h6 class="card-subtitle mb-2 text-muted">Current price: <span class="text-danger font-weight-bold">${{ details.current_price }}</span></h6>
+                {% if item.notify_when != 'no' %}
+                <p class="card-text">You will be notified by email later when the price {{ item.notify_when}}
+                    {% if item.desired_price %} 
+                    ${{item.desired_price}}
+                    {% endif %}
+                    .
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
 
-<div class="card shadow-sm text-dark">
-    <div class="card-header">
-        <h4 class="my-0 font-weight-normal text-center">Tracking Confirmation</h4>
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">We have started tracking the following Amazon item for you:</h5>
-        <p class="card-text"><i>{{ details.item }}</i></p>
-        <h6 class="card-subtitle mb-2 text-muted">Current price: ${{ details.current_price }}</h6>
-        <p class="card-text">You will be notified by email later when the price {{ item.notify_when}}
-            {% if item.desired_price %} 
-            ${{item.desired_price}}
-            {% endif %}
-            .
-        </p>
-    </div>
 
 {% endblock%}
