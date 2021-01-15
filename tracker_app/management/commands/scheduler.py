@@ -1,27 +1,36 @@
 import time
+import schedule
 from django.core.management.base import BaseCommand
 from tracker_app.models import Item
 from tracker_app.scraper import scrape, send_mail
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        schedule.every().day.at("00:00").do(self.run_scraper)
+        schedule.every().day.at("06:00").do(self.run_scraper)
+        schedule.every().day.at("12:00").do(self.run_scraper)
+        schedule.every().day.at("18:00").do(self.run_scraper)
         while True:
+            schedule.run_pending()
+            time.sleep(1)
             # run every 3 hour
-            if time.time() % 10800 == 0:
-                try:
-                    all_items = Item.objects.all()
-                    if len(all_items) > 0:
-                        for item in all_items:
-                            payload = self.track_and_email(item)
-                            self.record(item, payload)
-                    else:
-                        print('no item to track')
-                except Exception as e: 
-                    print(str(e))
-
-                print('sleeping...')
-                time.sleep(10800)
+            
     
+    def run_scraper(self):
+        print('scraping...')
+        try:
+            all_items = Item.objects.all()
+            if len(all_items) > 0:
+                for item in all_items:
+                    payload = self.track_and_email(item)
+                    self.record(item, payload)
+            else:
+                print('no item to track')
+        except Exception as e: 
+            print(str(e))
+
+        print('sleeping...')
+
     def track_and_email(self, item):
         try:
             payload = scrape(item)
