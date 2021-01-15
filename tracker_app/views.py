@@ -29,15 +29,16 @@ def register(request):
         )
 
         payload = scrape(new_item, init=True)
-        new_item.init_price = payload['current_price']
+        new_item.init_price = payload.get('current_price')
+        new_item.landing_image = payload.get('landing_image')
         new_item.save()
-
-        new_item.record_set.create(price=payload['current_price'], emailed=payload['emailed'])
+        new_item.record_set.create(price=payload.get('current_price'), emailed=payload.get('emailed'))
 
         notify_choices_mapper = {
             'below': 'is below ',
             'down': 'goes down',
-            'change': 'changes'
+            'change': 'changes',
+            'no': 'no'
         }
         
         new_item.notify_when = notify_choices_mapper[new_item.notify_when]

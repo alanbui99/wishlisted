@@ -10,11 +10,13 @@ class Item(models.Model):
         choices=(
             ("below", "Below certain price"),
             ("down", "Goes down"),
-            ("change", "Changes")
+            ("change", "Changes"),
+            ("no", "Do not notify")
         )
     )
     desired_price = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
     init_price = models.DecimalField(max_digits=20, decimal_places=2, null=True)
+    landing_image = models.URLField(max_length=500, null=True)
     date_registered = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
