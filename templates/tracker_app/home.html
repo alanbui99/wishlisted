@@ -2,28 +2,70 @@
 {% load static %}
 {% block title%} Home {% endblock %}
 {% block content%}
-<main role="main" class="text-center mt-5">
-    <h1 class="display-4">Never miss a price drop!</h1>
-    <p class="text-secondary">
-        <small>
-            We will notify you the moment there’s a better price on <img src="{% static 'tracker_app/icons/amazon.svg' %}"> 
-            items you can’t stop thinking about.
-        </small>
-    </p>
-
-    <div class="row">
-        <div class="col-sm mt-2">
-            <a href="{% url 'register' %}" class="text-decoration-none">
-                <button type="button" class="btn btn-block btn-primary">Get started</button>
-            </a>
+<section id="hero" class="hero hero-home bg-gray">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-6 text order-2 order-lg-1">
+                <h1>Never miss a price drop again!</h1>
+                <p class="hero-text">
+                    Get notified when price drops on 
+                    <img src="{% static 'tracker_app/images/amazon.png' %}" width="32" height="32" alt="Amazon"> 
+                    items you can’t stop thinking about.
+                </p>
+                <div class="CTA">
+                    <a href="{% url 'register' %}" class="btn btn-primary btn-shadow btn-gradient">Get started</a>
+                    <a href="{% url 'item_list' %}" class="btn btn-outline-primary">View tracked items</a>
+                </div>
+            </div>
+        <div class="d-none d-md-block col-lg-6 order-1 order-lg-2">
+            <img src="{% static 'tracker_app/images/vector-creator.png' %}" alt="..." class="img-fluid">
         </div>
-        <div class="col-sm mt-2">
-            <a href="{% url 'home' %}" class="text-decoration-none">
-                <button type="button" class="btn btn-block btn-outline-primary">View currently tracked items</button>
-            </a>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="browser">
+    <h2 class="text-center mb-5">How it works</h2>
+
+    <div id="myTab" role="tablist" class="nav nav-tabs">
+        <div class="row w-100 m-auto">
+            <div class="col-md-4">
+                <a id="nav-first-tab" data-toggle="tab" href="#nav-first" role="tab" aria-controls="nav-first" aria-expanded="true" class="nav-item nav-link active"> 
+                <span class="number">1</span>Fill in a form to register an item for tracking</a>
+            </div>
+            <div class="col-md-4">
+                <a id="nav-second-tab" data-toggle="tab" href="#nav-second" role="tab" aria-controls="nav-second" class="nav-item nav-link"> 
+                <span class="number">2</span>Get our email when price changes to what you want</a>
+            </div>
+            <div class="col-md-4">
+                <a id="nav-third-tab" data-toggle="tab" href="#nav-third" role="tab" aria-controls="nav-third" class="nav-item nav-link"> 
+                <span class="number">3</span>View how the price has changed over time</a>
+            </div>
         </div>
     </div>
 
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center"> 
+            <div class="col-lg-8 text-center">
+                <div class="browser-mockup">
+                    <div id="nav-tabContent" class="tab-content">
+                        <div id="nav-first" role="tabpanel" aria-labelledby="nav-first-tab" class="tab-pane fade show active"><img src="{% static 'tracker_app/images/preview-1.png' %}" height="300px" alt="..." class="img-fluid"></div>
+                        <div id="nav-second" role="tabpanel" aria-labelledby="nav-second-tab" class="tab-pane fade"><img src="{% static 'tracker_app/images/preview-2.png' %}" alt="..." class="img-fluid"></div>
+                        <div id="nav-third" role="tabpanel" aria-labelledby="nav-third-tab" class="tab-pane fade"><img src="{% static 'tracker_app/images/preview-3.png' %}" alt="..." class="img-fluid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</main>
+</section>
+
+<section id="about" class="about-us bg-gray">
+    <div class="container">
+        <h2>About</h2>
+        <div class="row">
+            <p class="lead col-lg-10">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. or randomised words which don't look even slightly believable. </p>
+        </div><a href="#" class="btn btn-primary btn-shadow btn-gradient">Discover More</a>
+    </div>
+</section>
+
 {% endblock %}

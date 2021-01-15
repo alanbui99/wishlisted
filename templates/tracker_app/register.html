@@ -4,42 +4,79 @@
 {% block title%} Register {% endblock %}
 
 {% block content%}
-<div class="card shadow-sm text-dark">
-    <div class="card-header">
-        <h4 class="my-0 font-weight-normal text-center">Start Tracking A New Item</h4>
-    </div>
-    <div class="card-body form-group">
-        <form method="POST" onsubmit="displaySpinner()">
-            {% csrf_token %}
-            {% for field in form %}
-                <p class="text-danger">{{ field.errors.as_text }}</p>
-                {% if field.name == 'desired_price' %}
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
+
+<div class="row bg-gray">
+    <section class="col-md-3 d-none d-md-flex flex-column justify-content-between">
+        <img src="{% static 'tracker_app/images/flame-1239.png' %}" 
+        class="img-fluid">
+        <img src="{% static 'tracker_app/images/cherry-online-shopping.png' %}" 
+        class="img-fluid">
+    </section>
+    <section class="col-md-6">
+        <div class="card m-auto form-holder has-shadow" style="max-width: 32rem;">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">
+                    <img src="https://img.icons8.com/plasticine/35/000000/order-shipped.png"/>
+                    Track a new item
+                </h4>
+            </div>
+            <div class="card-body form-group">
+                <form method="POST" onsubmit="displayProgressBar()">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% if field.errors %}
+                        <p class="text-danger">{{ field.errors.as_text }}</p>
+                        {% endif %}
+        
+                        {% if field.name == 'desired_price' %}
+                        <div class="input-group">
+                            <span class="my-auto mr-2 lead">$</span>
+                            {{ field }}    
+                        </div>
+                        {% else %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+        
+                            {% if field.name == 'url' %}
+                            <small class="form-text text-muted">Enter the
+                                <img src="{% static 'tracker_app/images/amazon.png' %}" width="32" height="32" alt="Amazon"> 
+                                link you want to track
+                            </small>
+                            {% elif field.name == 'email' %}
+                            <small class="form-text text-muted">Enter your email address for notifications of price changes</small>
+                            {% endif %}    
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="progress mt-3" id="progress-wrapper" style="display: none;">
+                        <div class="progress-bar btn-gradient" 
+                            id="progress-bar" role="progressbar" style="width: 0%" 
+                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        </div>
                     </div>
-                    {{ field }}    
-                </div>
-                {% else %}
-                <!-- <div class="form-group"> -->
-                    {{ field.label_tag }}
-                    {{ field }}    
-                <!-- </div> -->
-                {% endif %}
-            {% endfor %}
-            <button id="submit" class="btn btn-primary w-100 mt-3" type="submit">Register</button>
-            <!-- <button class="btn btn-primary w-100 mt-3" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <span>Scanning the item...</span>
-            </button> -->
-        </form>
-    </div>
+                    <button id="submit" class="btn btn-primary btn-shadow btn-gradient w-100 mt-3" 
+                        type="submit">
+                        Register
+                    </button>
+                </form>
+            </div>
+        </div>    
+    </section>
+    <section class="col-md-3 d-none d-md-flex flex-column justify-content-between">
+        <img src="{% static 'tracker_app/images/women-with-happy-shopping.png' %}" 
+        class="img-fluid">
+        <img src="{% static 'tracker_app/images/clip-online-shopping-5.png' %}" 
+        class="img-fluid">
+    </section>
 </div>
+
 {% endblock%}
 
 {% block scripts %} 
 
-<script type="text/javascript" src="../../static/tracker_app/js/register.js"></script>
+<script type="text/javascript" src="{% static 'tracker_app/js/register.js' %}"></script>
 
 {% endblock %}
 

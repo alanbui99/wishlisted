@@ -1,0 +1,2 @@
+Price for the product is now ${{ current_price }}.
+GRAB IT NOW at: {{ item_url }}
