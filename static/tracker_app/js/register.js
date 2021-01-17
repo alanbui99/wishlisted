@@ -12,7 +12,20 @@ function displayDesiredPrice() {
 
 function displaySpinner() {
     // alert('doing it')
-    let submitButton = document.getElementById('submit')
-    submitButton.disabled = true
-    submitButton.innerHTML = "<span class='spinner-border spinner-border-sm mr-2' role='status' aria-hidden='true'></span><span>Scanning the item...</span>"
+    const submitButton = document.getElementById('submit')
+    const progressBarWrapper = document.getElementById('scrape-progress-wrapper')
+    const progressBar = document.getElementById('scrape-progress')
+
+    submitButton.style.display = 'none'
+    progressBarWrapper.style.display = 'block'
+
+    let curProgress = 0
+    setInterval(() => {
+        curProgress += 0.3333
+        progressBar.style.width = `${curProgress}%`
+        progressBar.setAttribute('aria-valuenow', curProgress)
+        progressBar.innerHTML = "<span style='color: #e9ecef'>Scanning the item... Please wait...</scan>"
+        if (current_progress >= 100)
+            clearInterval(interval);
+    }, 100);
 }

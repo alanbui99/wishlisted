@@ -51,7 +51,11 @@ class Command(BaseCommand):
 
     def record(self, item, payload):
         try:
-            item.record_set.create(price=payload.get('current_price'), emailed = payload.get('emailed'))
+            item.record_set.create(
+                price=payload.get('current_price'), 
+                emailed = payload.get('emailed'),
+                exec_time=payload.get('exec_time')
+            )
         except Exception as e: 
             print(str(e))
 

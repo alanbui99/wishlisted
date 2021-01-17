@@ -4,12 +4,13 @@ from .item import Item
 
 class Record(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    timeStamp = models.DateTimeField(default=timezone.now)
+    time_stamp = models.DateTimeField(default=timezone.now)
     price = models.DecimalField(max_digits=20, decimal_places=2)
     emailed = models.BooleanField()
-    
+    exec_time = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+
     class Meta:
-        unique_together = ['item', 'timeStamp']
+        unique_together = ['item', 'time_stamp']
     
     def __str__(self):
         return str(self.item.id)

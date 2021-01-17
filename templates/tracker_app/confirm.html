@@ -5,23 +5,34 @@
 
 {% block content%}
 <div class="row">
-    <section class="col-md-5 d-none d-md-flex justify-content-center">
+    <section class="col-md-3 d-none d-md-flex flex-column justify-content-center">
         <img src="{% static 'tracker_app/images/clip-1016.png' %}" 
         class="img-fluid" style="max-height: 60%">
     </section>
-    <section class="col-md-7">
+    <section class="col-md-6">
         <div class="card m-auto shadow-sm border-secondary" style="max-width: 32rem;">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal text-center">Tracking Confirmation</h4>
+                <h4 class="my-0 font-weight-normal text-center">
+                    <img src="https://img.icons8.com/fluent/48/000000/verified-account.png"/>
+                    Tracking Confirmation
+                </h4>
             </div>
             <div class="card-body">
                 <h5 class="card-title">The following
                     <img src="{% static 'tracker_app/images/amazon.png' %}" width="32" height="32" alt="Amazon"> 
-                    item is being tracked:</h5>
-                <img class="card-img-top" style="max-height: 500px;"
-                src="{{ details.landing_image }}" alt="Landing image">
+                    item is being tracked:
+                </h5>
+                {% if details.landing_image %}
+                <div class="d-flex justify-content-center">
+                    <img class="card-img-top" style="max-height: 300px; max-width: 200px"
+                    src="{{ details.landing_image }}" alt="Landing image">
+                </div>
+                {% endif %}
                 <p class="card-text"><i>{{ details.item }}</i></p>
-                <h6 class="card-subtitle mb-2 text-muted">Current price: <span class="text-danger font-weight-bold">${{ details.current_price }}</span></h6>
+                <h5 class="card-subtitle mb-2 text-muted font-weight-bold">
+                    Current price: 
+                    <span class="text-danger" style="font-size: 1.25em">${{ details.current_price }}</span>
+                </h5>
                 {% if item.notify_when != 'no' %}
                 <p class="card-text">You will be notified by email later when the price {{ item.notify_when}}
                     {% if item.desired_price %} 
@@ -33,7 +44,10 @@
             </div>
         </div>
     </section>
+    <section class="col-md-3 d-none d-md-flex flex-column justify-content-center">
+        <img src="{% static 'tracker_app/images/surr-671.png' %}" 
+        class="img-fluid" style="max-height: 60%">
+    </section>
 </div>
-
 
 {% endblock%}
