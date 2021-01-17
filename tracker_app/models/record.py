@@ -7,6 +7,7 @@ class Record(models.Model):
     time_stamp = models.DateTimeField(default=timezone.now)
     price = models.DecimalField(max_digits=20, decimal_places=2)
     emailed = models.BooleanField()
+    first_scrape = models.BooleanField(default=False)
     exec_time = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
     class Meta:
