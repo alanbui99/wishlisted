@@ -14,45 +14,19 @@ def home(request):
 def register(request):
     form = ItemForm(request.POST or None)
     if form.is_valid():
-        # try:
-        email_input = form.cleaned_data.get('email')
-        if User.objects.filter(username=email_input).exists():
-            user = User.objects.filter(username=email_input).first()
-        else:
-            user = User.objects.create_user(email_input)
-        
-        new_item = Item.objects.create(
-            url=form.cleaned_data.get('url'),
-            notify_when=form.cleaned_data.get('notify_when'),
-            desired_price=form.cleaned_data.get('desired_price'),
-            user=user
-        )
-
-        payload = scrape(new_item, init=True)
-        if not payload: return render(request, 'tracker_app/scrape-error.html')
-
-        new_item.init_price = payload.get('current_price')
-        new_item.landing_image = payload.get('landing_image')
-        new_item.save()
-        new_item.record_set.create(
-            price=payload.get('current_price'), 
-            emailed=payload.get('emailed'),
-            exec_time=payload.get('exec_time')
-        )
-
-        notify_choices_mapper = {
-            'below': 'is below ',
-            'down': 'goes down',
-            'change': 'changes',
-            'no': 'no'
-        }
-        
-        new_item.notify_when = notify_choices_mapper[new_item.notify_when]
-
-        return render(request, 'tracker_app/confirm.html', {'details': payload, 'item': new_item})
-
-        # except Exception as e: 
-        #     print(str(e))
-
+        new_item_id = Item.register(form.cleaned_data)
+        if not new_item_id: return redirect('tracking_error')
+        request.session['item_id'] = str(new_item_id)
+        return redirect('confirm')
 
     return render(request, 'tracker_app/register.html', {'form': form, 'processing': False})
+
+def confirm(request):
+    item_id = request.session.get('item_id')
+    item = Item.objects.filter(id=item_id).first()
+    print(item)
+    return render(request, 'tracker_app/confirm.html', {'item': item})
+
+def tracking_error(request):
+    return render(request, 'tracker_app/tracking_error.html')
+

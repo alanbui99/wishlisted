@@ -7,7 +7,7 @@ import os
 from faker import Faker
 fake = Faker()
 
-def scrape(data, init=False):
+def scrape(data, first_time=False):
     start_time = time.time()
     print('Checking price...')
     payload = {}
@@ -26,7 +26,7 @@ def scrape(data, init=False):
                 #for general items
                 else: 
                     payload = get_item_details(soup)
-                if init:
+                if first_time:
                     #send notification email if current price drops below desired price
                     if data.notify_when == 'below' and payload.get('current_price') < data.desired_price:
                         try:
