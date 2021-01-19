@@ -14,4 +14,4 @@ class Record(models.Model):
         unique_together = ['item', 'time_stamp']
     
     def __str__(self):
-        return str(self.item.id)
+        return str(self.item.title)
