@@ -11,11 +11,24 @@ def scrape(data, first_time=False):
     start_time = time.time()
     print('Checking price...')
     payload = {}
+
+    headers = {
+        "User-Agent": None, 
+        "Accept-Encoding":"gzip, deflate, br", 
+        "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9", 
+        "Pragma": "no-cache",
+        "DNT":"1",
+        "Connection":"close", 
+        "Upgrade-Insecure-Requests":"1"
+    }
+
     while True:
-        if time.time() - start_time > 30: return 
+        if time.time() - start_time > 15: return 
         try:
             user_agent = fake.user_agent()
-            headers = {"User-Agent": user_agent}
+            print(user_agent)
+            headers["User-Agent"] = user_agent
             page = requests.get(data.url, headers = headers)
             soup = BeautifulSoup(page.content, 'lxml')
 

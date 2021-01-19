@@ -20,12 +20,10 @@ function displaySpinner() {
     progressBarWrapper.style.display = 'block'
 
     let curProgress = 0
-    setInterval(() => {
-        curProgress += 0.3333
+    const interval = setInterval(() => {
+        curProgress += 1
         progressBar.style.width = `${curProgress}%`
         progressBar.setAttribute('aria-valuenow', curProgress)
-        progressBar.innerHTML = "<span style='color: #e9ecef'>Scanning the item... Please wait...</scan>"
-        if (current_progress >= 100)
-            clearInterval(interval);
+        if (current_progress >= 100) return;
     }, 100);
 }
