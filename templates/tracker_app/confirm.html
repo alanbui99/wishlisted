@@ -4,24 +4,24 @@
 {% block title%} Confirm {% endblock %}
 
 {% block content%}
-<div class="row">
+<div class="row bg-gray">
     <section class="col-md-3 d-none d-md-flex flex-column justify-content-center">
         <img src="{% static 'tracker_app/images/clip-1016.png' %}" 
         class="img-fluid" style="max-height: 60%">
     </section>
     <section class="col-md-6">
-        <div class="card m-auto shadow-sm border-secondary" style="max-width: 32rem;">
+        <div class="card m-auto form-holder has-shadow" style="max-width: 32rem;">
             <div class="card-header">
                 <h4 class="my-0 font-weight-normal text-center">
                     <img src="https://img.icons8.com/fluent/48/000000/verified-account.png"/>
                     Tracking Confirmation
                 </h4>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">The following
+            <div class="card-body text-center">
+                <div class="card-title lead">The following
                     <img src="{% static 'tracker_app/images/amazon.png' %}" width="32" height="32" alt="Amazon"> 
                     item is being tracked:
-                </h5>
+                </div>
                 {% if item.landing_image %}
                 <div class="d-flex justify-content-center">
                     <img class="card-img-top" style="max-height: 300px; max-width: 200px"
@@ -29,14 +29,14 @@
                 </div>
                 {% endif %}
                 <p class="card-text"><i>{{ item.title }}</i></p>
-                <h5 class="card-subtitle mb-2 text-muted font-weight-bold">
-                    Current price: 
-                    <span class="text-danger" style="font-size: 1.25em">${{ item.init_price }}</span>
-                </h5>
+                <div class="card-subtitle mb-2 text-muted lead">
+                    <b class="">Price:</b> 
+                    <b class="text-danger" style="font-size: 1.25em">${{ item.init_price }}</b>
+                </div>
                 {% if item.notify_when != 'no' %}
-                <p class="card-text">You will be notified by email later when the price {{ item.notify_when}}
+                <p class="blockquote-footer">You will be notified by email when the price {{ item.notify_when}}
                     {% if item.desired_price %} 
-                    ${{item.desired_price}}
+                    <b>${{item.desired_price}}</b>
                     {% endif %}
                     .
                 </p>

@@ -4,32 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'tracker_app/css/base.css' %}">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&family=Raleway&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'tracker_app/vendor/bootstrap/css/bootstrap.css' %}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static 'tracker_app/vendor/font-awesome/css/font-awesome.css' %}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'tracker_app/css/style.default.css' %}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'tracker_app/css/custom.css' %}">
+    <!-- Google fonts - Open Sans-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800">
+
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
-    <header class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
+    <!-- navbar-->
+    <header class="header">
+        <nav class="navbar navbar-expand-lg fixed-top">
             <a class="navbar-brand" href="/"><h2 id="logo" style="font-family: 'PT Sans', sans-serif;">amazonTrack</h2></a>
-        </nav>    
+            <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><span></span><span></span><span></span></button>
+            <div id="navbarSupportedContent" class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto align-items-start align-items-lg-center">
+                    <li class="nav-item"><a href="#about" class="nav-link link-scroll">About</a></li>
+                    <li class="nav-item"><a href="#features" class="nav-link link-scroll">Features</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link link-scroll">Feedback</a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
-    <!-- <header class="masthead">
-        <a href="{% url 'home' %}">
-            <img src="{% static 'tracker_app/icons/home.svg' %}">
-        </a>
-    </header> -->
-    <main class="container">
+
+    <main>
         {% block content %} {% endblock %}
     </main>
 
 
 </body>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+<!-- Javascript files-->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"> </script>
+<script src="{% static 'tracker_app/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 {% block scripts %} {% endblock %}
 
 </html>
