@@ -1,0 +1,22 @@
+{% extends './base.html' %}
+{% load static %}
+{% block title%} Home {% endblock %}
+{% block content%}
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-6 motto mt-5">
+        <h2 class="motto font-weight-bold mb-3">Never miss a price drop again!</h2>
+        <p class="intro-text text-muted">
+            Get notified when price drops on 
+            <img src="{% static 'tracker_app/images/amazon.png' %}" width="32" height="32" alt="Amazon"> 
+            items you can’t stop thinking about.
+        </p>
+        <a class="btn btn-sm btn-dark mb-2" href="{% url 'register' %}">Get started</a>
+        <a class="btn btn-sm btn-outline-dark mb-2" href="#">View tracked items</a>
+    </div>
+    <div class="col-md-5 d-none d-md-flex justify-content-center">
+        <img src="{% static 'tracker_app/images/clip-online-shopping-7.png' %}" 
+        id="home-illustration" class="img-fluid">
+    </div>
+</div>
+{% endblock %}
