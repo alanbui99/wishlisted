@@ -5,7 +5,6 @@ from urllib.parse import urlencode
 
 from .models import Item
 from .forms import ItemForm
-from .scraper import scrape
 
 # Create your views here.
 def home(request):

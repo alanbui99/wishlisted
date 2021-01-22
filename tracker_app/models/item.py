@@ -4,7 +4,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-from ..scraper import scrape
+from ..utils.scrapers.amazon_scraper import AmazonScraper
+from ..utils.email_handler import send_notify_mail
 
 class Item(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -46,7 +47,8 @@ class Item(models.Model):
         )
 
         #scrape
-        scrape_payload = scrape(new_item, first_time=True)
+        scraper = AmazonScraper(new_item)
+        scrape_payload = scraper.do_scrape()
         if not scrape_payload: return
 
         #add more fields and save
@@ -54,6 +56,14 @@ class Item(models.Model):
         new_item.init_price = scrape_payload.get('current_price')
         new_item.landing_image = scrape_payload.get('landing_image')
         new_item.save()
+
+        #send notification email if current price is already below desired price
+        if new_item.notify_when == 'below' and new_item.init_price < new_item.desired_price:
+            try:
+                send_notify_mail(new_item, scrape_payload)
+            except Exception as e:
+                print(str(e))
+
 
         #create scrape record
         new_item.record_scrape(scrape_payload, True)
