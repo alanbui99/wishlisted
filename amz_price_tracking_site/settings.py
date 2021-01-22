@@ -32,6 +32,11 @@ ALLOWED_HOSTS = [
     'https://amazontrack.herokuapp.com/'
 ]
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'abui.projects@gmail.com'
+EMAIL_HOST_PASSWORD = 'Disboyfc@projects'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Application definition
 
