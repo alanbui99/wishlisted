@@ -25,12 +25,10 @@ class AmazonScraper:
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             executor.map(self.send_request, proxylist)
-
+        
         payload = {'title': None, 'current_price': None, 'landing_image': None, 'emailed': False}
-        soup = BeautifulSoup(self.response.content, 'lxml')
-        found = soup.find(id = "productTitle") or soup.find('span', attrs={'class': 'qa-title-text'})
-
-        if found:
+        soup = self.response
+        if soup.find(id='productTitle') or soup.find('span', attrs={'class': 'qa-title-text'}):
             #for books
             if soup.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}): 
                 self.get_book_payload(soup, payload)
@@ -47,7 +45,6 @@ class AmazonScraper:
     
     def send_request(self, proxy):
         if self.response: return
-
         headers = {
             "User-Agent": None, 
             "Accept-Encoding":"gzip, deflate, br", 
@@ -64,8 +61,11 @@ class AmazonScraper:
 
         try:
             page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=2)
-            self.response = page
-            print('WORKING', proxy)
+            print(page)
+            if page.status_code == 200:
+                soup = BeautifulSoup(page.content, 'lxml')                
+                self.response = soup
+                print('WORKING', proxy)
             
         except Exception as e:
             pass
@@ -74,7 +74,7 @@ class AmazonScraper:
         payload['title'] = soup.find(id = 'productTitle').get_text().strip().encode('ascii', 'replace').decode()
 
         #possible ids of html tag with item price
-        possible_ids = [ 'priceblock_ourprice', 'priceblock_saleprice', 'priceblock_dealprice', 'rentPrice'] 
+        possible_ids = ['priceblock_ourprice', 'priceblock_saleprice', 'priceblock_dealprice', 'rentPrice'] 
         for id in possible_ids:
             try:
                 # extract item price
@@ -82,7 +82,7 @@ class AmazonScraper:
                 if price_str: break
             except Exception as e:
                 continue
-
+        
         payload['current_price'] = float(price_str[1:])
         payload['landing_image'] = soup.find(id= 'landingImage').get('data-old-hires').strip()
 
