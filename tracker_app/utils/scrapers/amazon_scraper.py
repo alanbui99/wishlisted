@@ -10,15 +10,16 @@ from faker import Faker
 fake = Faker()
 
 class AmazonScraper:
-    def __init__(self, item):
+    def __init__(self, item, user_agent=None):
         self.item = item
+        self.user_agent = user_agent
 
     def do_scrape(self):
         start_time = time.time()
         print('Checking price...')
         payload = {'title': None, 'current_price': None, 'landing_image': None, 'emailed': False}
         headers = {
-            "User-Agent": None, 
+            "User-Agent": self.user_agent, 
             "Accept-Encoding": "gzip, deflate, br", 
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.9", 
@@ -27,12 +28,17 @@ class AmazonScraper:
             "Connection":"close", 
             "Upgrade-Insecure-Requests":"1"
         }
-        
+
+        first_attempt = True
         while True:
             if time.time() - start_time > 15: return 
-            user_agent = fake.user_agent()
-            print(user_agent)
-            headers["User-Agent"] = user_agent
+            
+            #use actual user agent at first attempt
+            if not self.user_agent or not first_attempt:
+                user_agent = fake.user_agent()
+                print(user_agent)
+                headers["User-Agent"] = user_agent
+
             page = requests.get(self.item.url, headers = headers)
             soup = BeautifulSoup(page.content, 'lxml')
             found = soup.find(id = "productTitle") or soup.find('span', attrs={'class': 'qa-title-text'})
@@ -52,6 +58,7 @@ class AmazonScraper:
                 print(payload)
                 return payload
 
+            first_attempt = False
             # delay (to avoid getting blocked), then try with the next user agent    
             rest_time = random.choice([1,2,4,6])
             print('resting...', rest_time) 
