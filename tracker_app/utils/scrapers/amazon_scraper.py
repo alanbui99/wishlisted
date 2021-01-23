@@ -60,7 +60,7 @@ class AmazonScraper:
         headers["User-Agent"] = user_agent
 
         try:
-            page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=2)
+            page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=0.5)
             print(page)
             if page.status_code == 200:
                 soup = BeautifulSoup(page.content, 'lxml')                
