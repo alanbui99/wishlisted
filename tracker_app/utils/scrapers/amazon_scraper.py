@@ -59,6 +59,7 @@ class AmazonScraper:
                 return payload
 
             first_attempt = False
+            print(soup)
             # delay (to avoid getting blocked), then try with the next user agent    
             rest_time = random.choice([1,2,4,6])
             print('resting...', rest_time) 
