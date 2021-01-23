@@ -83,8 +83,8 @@ class AmazonScraper:
                 if price_str: break
             except Exception as e:
                 continue
-        
-        payload['current_price'] = float(price_str[1:])
+        if price_str:
+            payload['current_price'] = float(price_str[1:])
         payload['landing_image'] = soup.find(id= 'landingImage').get('data-old-hires').strip()
 
     def get_book_payload(self, soup, payload):
