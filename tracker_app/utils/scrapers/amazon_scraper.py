@@ -29,15 +29,16 @@ class AmazonScraper:
             "Upgrade-Insecure-Requests":"1"
         }
 
-        first_attempt = True
+        # first_attempt = True
         while True:
             if time.time() - start_time > 15: return 
             
+            # print(self.user_agent)
             #use actual user agent at first attempt
-            if not self.user_agent or not first_attempt:
-                user_agent = fake.user_agent()
-                print(user_agent)
-                headers["User-Agent"] = user_agent
+            # if not self.user_agent or not first_attempt:
+            user_agent = fake.user_agent()
+            print(user_agent)
+            headers["User-Agent"] = user_agent
 
             page = requests.get(self.item.url, headers = headers)
             soup = BeautifulSoup(page.content, 'lxml')
