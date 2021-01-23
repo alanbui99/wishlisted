@@ -52,7 +52,7 @@ class Item(models.Model):
         if not scrape_payload: return
 
         #add more fields and save
-        new_item.title = scrape_payload.get('item')
+        new_item.title = scrape_payload.get('title')
         new_item.init_price = scrape_payload.get('current_price')
         new_item.landing_image = scrape_payload.get('landing_image')
         new_item.save()
