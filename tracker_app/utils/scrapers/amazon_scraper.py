@@ -2,10 +2,13 @@ import time
 import random
 import os
 import json
+import concurrent.futures
 
 import requests
 from bs4 import BeautifulSoup
 from faker import Faker
+
+from ..proxies_scraper import get_proxies
 
 fake = Faker()
 
@@ -13,84 +16,59 @@ class AmazonScraper:
     def __init__(self, item, user_agent=None):
         self.item = item
         self.user_agent = user_agent
+        self.response = None
 
     def do_scrape(self):
-        # session = HTMLSession()
-        # request = session.get(self.item.url)  
-        # request.html.render(sleep=1)
-
-        # product = {
-        #     'title': request.html.xpath('//*[@id="productTitle"]', first=True).text,
-        #     'price': request.html.xpath('//*[@id="priceblock_saleprice"]', first=True).text
-        # }
-
-        # print(product)
-
-
-
+        print('scraping...')
         start_time = time.time()
-        print('Checking price...')
+        proxylist = get_proxies()
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(self.send_request, proxylist)
+
         payload = {'title': None, 'current_price': None, 'landing_image': None, 'emailed': False}
+        soup = BeautifulSoup(self.response.content, 'lxml')
+        found = soup.find(id = "productTitle") or soup.find('span', attrs={'class': 'qa-title-text'})
+
+        if found:
+            #for books
+            if soup.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}): 
+                self.get_book_payload(soup, payload)
+            #for qa items(eg: iphone 12)
+            elif soup.find('span', attrs={'class': 'qa-title-text'}):
+                self.get_qa_payload(soup, payload)
+            #for general items
+            else: 
+                self.get_item_payload(soup, payload)
+
+            payload['exec_time'] = round(time.time() - start_time, 2)
+            print(payload)
+            return payload
+    
+    def send_request(self, proxy):
+        if self.response: return
+
         headers = {
             "User-Agent": None, 
-            "Accept-Encoding": "gzip, deflate, br", 
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            "Accept-Encoding":"gzip, deflate, br", 
+            "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.9", 
             "Pragma": "no-cache",
             "DNT":"1",
             "Connection":"close", 
-            "Upgrade-Insecure-Requests":"1",
-            "Cache-Control": "no-cache",
-            "Referer": "https://www.google.com/"
-
+            "Upgrade-Insecure-Requests":"1"
         }
 
-        ## importing socket module
-        import socket
-        ## getting the hostname by socket.gethostname() method
-        hostname = socket.gethostname()
-        ## getting the IP address using socket.gethostbyname() method
-        ip_address = socket.gethostbyname(hostname)
-        ## printing the hostname and ip_address
-        print(f"Hostname: {hostname}")
-        print(f"IP Address: {ip_address}")
+        user_agent = fake.user_agent()
+        headers["User-Agent"] = user_agent
 
-        # first_attempt = True
-        while True:
-            if time.time() - start_time > 15: return 
+        try:
+            page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=2)
+            self.response = page
+            print('WORKING', proxy)
             
-            # print(self.user_agent)
-            #use actual user agent at first attempt
-            # if not self.user_agent or not first_attempt:
-            user_agent = fake.user_agent()
-            print(user_agent)
-            headers["User-Agent"] = user_agent
-
-            page = requests.get(self.item.url, headers = headers)
-            soup = BeautifulSoup(page.content, 'lxml')
-            found = soup.find(id = "productTitle") or soup.find('span', attrs={'class': 'qa-title-text'})
-
-            if found:
-                #for books
-                if soup.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}): 
-                    self.get_book_payload(soup, payload)
-                #for qa items(eg: iphone 12)
-                elif soup.find('span', attrs={'class': 'qa-title-text'}):
-                    self.get_qa_payload(soup, payload)
-                #for general items
-                else: 
-                    self.get_item_payload(soup, payload)
-
-                payload['exec_time'] = round(time.time() - start_time, 2)
-                print(payload)
-                return payload
-
-            first_attempt = False
-            print(soup)
-            # delay (to avoid getting blocked), then try with the next user agent    
-            rest_time = random.choice([1,2,4,6])
-            print('resting...', rest_time) 
-            time.sleep(rest_time) 
+        except Exception as e:
+            pass
                 
     def get_item_payload(self, soup, payload):
         payload['title'] = soup.find(id = 'productTitle').get_text().strip().encode('ascii', 'replace').decode()
