@@ -41,7 +41,8 @@ class AmazonScraper:
 
             payload['exec_time'] = round(time.time() - start_time, 2)
             print(payload)
-            return payload
+
+            if payload['current_price']: return payload
     
     def send_request(self, proxy):
         if self.response: return
@@ -80,11 +81,14 @@ class AmazonScraper:
             try:
                 # extract item price
                 price_str = soup.find(id=id).get_text().strip()
-                if price_str: break
+                if price_str: 
+                    print(price_str)
+                    break
             except Exception as e:
                 continue
-        if price_str:
-            payload['current_price'] = float(price_str[1:])
+        
+        if not price_str: return
+        payload['current_price'] = float(price_str[1:])
         payload['landing_image'] = soup.find(id= 'landingImage').get('data-old-hires').strip()
 
     def get_book_payload(self, soup, payload):
