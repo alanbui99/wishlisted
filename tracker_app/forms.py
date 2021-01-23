@@ -1,6 +1,6 @@
 from django import forms
 from .models import Item
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 class ItemForm(forms.Form):
     NOTIFY_CHOICES = [
         ('below', 'is below a certain price'),
@@ -39,10 +39,13 @@ class ItemForm(forms.Form):
 
     def clean_url(self):
         url = self.cleaned_data.get('url')
-        domain = urlparse(url)[1]
+        domain, path = urlsplit(url)[1:3]
         if domain != 'www.amazon.com':
             raise forms.ValidationError("URL Must be from www.amazon.com")
-        return url
+        path = path.split('ref')[0]
+        sanitized_url = 'https://' + domain + path
+        print(sanitized_url)
+        return sanitized_url
         
 
 
