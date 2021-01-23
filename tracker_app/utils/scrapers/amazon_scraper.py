@@ -28,6 +28,7 @@ class AmazonScraper:
         
         payload = {'title': None, 'current_price': None, 'landing_image': None, 'emailed': False}
         soup = self.response
+        print(soup)
         if soup.find(id='productTitle') or soup.find('span', attrs={'class': 'qa-title-text'}):
             #for books
             if soup.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}): 
