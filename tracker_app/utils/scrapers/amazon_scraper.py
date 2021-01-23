@@ -6,6 +6,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from faker import Faker
+from requests_html import HTMLSession
 
 fake = Faker()
 
@@ -15,19 +16,45 @@ class AmazonScraper:
         self.user_agent = user_agent
 
     def do_scrape(self):
+        # session = HTMLSession()
+        # request = session.get(self.item.url)  
+        # request.html.render(sleep=1)
+
+        # product = {
+        #     'title': request.html.xpath('//*[@id="productTitle"]', first=True).text,
+        #     'price': request.html.xpath('//*[@id="priceblock_saleprice"]', first=True).text
+        # }
+
+        # print(product)
+
+
+
         start_time = time.time()
         print('Checking price...')
         payload = {'title': None, 'current_price': None, 'landing_image': None, 'emailed': False}
         headers = {
-            "User-Agent": self.user_agent, 
+            "User-Agent": None, 
             "Accept-Encoding": "gzip, deflate, br", 
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
             "Accept-Language": "en-US,en;q=0.9", 
             "Pragma": "no-cache",
             "DNT":"1",
             "Connection":"close", 
-            "Upgrade-Insecure-Requests":"1"
+            "Upgrade-Insecure-Requests":"1",
+            "Cache-Control": "no-cache",
+            "Referer": "https://www.google.com/"
+
         }
+
+        ## importing socket module
+        import socket
+        ## getting the hostname by socket.gethostname() method
+        hostname = socket.gethostname()
+        ## getting the IP address using socket.gethostbyname() method
+        ip_address = socket.gethostbyname(hostname)
+        ## printing the hostname and ip_address
+        print(f"Hostname: {hostname}")
+        print(f"IP Address: {ip_address}")
 
         # first_attempt = True
         while True:
