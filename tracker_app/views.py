@@ -22,6 +22,7 @@ def register(request):
 
 def confirm(request):
     item_id = request.session.get('item_id')
+    if not item_id: return redirect('/')
     item = Item.objects.filter(id=item_id).first()
     print(item)
     return render(request, 'tracker_app/confirm.html', {'item': item})
