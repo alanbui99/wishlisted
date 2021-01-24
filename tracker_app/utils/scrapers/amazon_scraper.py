@@ -13,9 +13,8 @@ from ..proxies_scraper import get_proxies
 fake = Faker()
 
 class AmazonScraper:
-    def __init__(self, item, user_agent=None):
+    def __init__(self, item):
         self.item = item
-        self.user_agent = user_agent
         self.response = None
 
     def do_scrape(self, start_time):
@@ -56,7 +55,7 @@ class AmazonScraper:
     def send_request(self, proxy):
         if self.response: return #stop trying out different proxies once response received
         headers = {
-            "User-Agent": self.user_agent or fake.user_agent(), 
+            "User-Agent": fake.user_agent(), 
             "Accept-Encoding":"gzip, deflate, br", 
             "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.9", 

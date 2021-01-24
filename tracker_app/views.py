@@ -13,7 +13,7 @@ def home(request):
 def register(request):
     form = ItemForm(request.POST or None)
     if form.is_valid():
-        new_item_id = Item.register(form.cleaned_data, request.headers['User-Agent'])
+        new_item_id = Item.register(form.cleaned_data)
         if not new_item_id: return redirect('tracking-error')
         request.session['item_id'] = str(new_item_id)
         return redirect('confirm')

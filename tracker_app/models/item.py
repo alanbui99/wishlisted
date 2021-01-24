@@ -31,7 +31,7 @@ class Item(models.Model):
         return str(self.title)
 
     @staticmethod
-    def register(form_data, user_agent):
+    def register(form_data):
         #check new user or return user
         email_input = form_data.get('email')
         if User.objects.filter(username=email_input).exists():
@@ -52,7 +52,7 @@ class Item(models.Model):
         scrape_payload = None
         #retry until success or timeout
         while scrape_payload is None and time.time() - start_time < 20:
-            scraper = AmazonScraper(new_item, user_agent)
+            scraper = AmazonScraper(new_item)
             scrape_payload = scraper.do_scrape(start_time)
         if not scrape_payload: return
 
