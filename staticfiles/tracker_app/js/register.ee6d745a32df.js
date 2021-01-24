@@ -10,14 +10,11 @@ function displayDesiredPrice() {
     desiredPrice.required = isBelowChoice.checked ? true : false
 }
 
-// document.getElementById("submit").addEventListener("click", displaySpinner);
-
-
 function displaySpinner() {
     // alert('doing it')
     const submitButton = document.getElementById('submit')
+    submitButton.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Scanning the item... Please wait...'
     submitButton.disabled = true
-    submitButton.innerHTML = "<span class='spinner-grow text-light' role='status'></span>Scanning the item... Please wait..."
     // const progressBarWrapper = document.getElementById('scrape-progress-wrapper')
     // const progressBar = document.getElementById('scrape-progress')
 

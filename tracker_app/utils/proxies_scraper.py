@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 def get_proxies():
     proxies = []
-    url = 'https://free-proxy-list.net/'
+    url = 'https://www.us-proxy.org/'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'lxml')
     table = soup.find(id='proxylisttable')

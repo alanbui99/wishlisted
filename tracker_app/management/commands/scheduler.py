@@ -35,8 +35,14 @@ class Command(BaseCommand):
 
     def scrape_and_email(self, item):
         try:
-            scraper = AmazonScraper(item)
-            payload = scraper.do_scrape()
+            #scrape
+            start_time=time.time()
+            payload = None
+            #retry until success or timeout
+            while payload is None and time.time() - start_time < 30:
+                scraper = AmazonScraper(item)
+                payload = scraper.do_scrape(start_time)
+            if not payload: return
             
             if item.notify_when == 'below' and payload.get('current_price') < item.desired_price:
                 send_notify_mail(item, payload)
@@ -54,6 +60,10 @@ class Command(BaseCommand):
 
     def record(self, item, payload):
         try:
+            if not payload: 
+                item.record_set.create(failed=True)
+                return
+                
             item.record_set.create(
                 price=payload.get('current_price'), 
                 emailed = payload.get('emailed'),

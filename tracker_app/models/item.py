@@ -1,4 +1,5 @@
 import uuid
+import time
 
 from django.db import models
 from django.utils import timezone
@@ -47,8 +48,12 @@ class Item(models.Model):
         )
 
         #scrape
-        scraper = AmazonScraper(new_item, user_agent)
-        scrape_payload = scraper.do_scrape()
+        start_time=time.time()
+        scrape_payload = None
+        #retry until success or timeout
+        while scrape_payload is None and time.time() - start_time < 20:
+            scraper = AmazonScraper(new_item, user_agent)
+            scrape_payload = scraper.do_scrape(start_time)
         if not scrape_payload: return
 
         #add more fields and save
@@ -77,7 +82,6 @@ class Item(models.Model):
             first_scrape = is_first_time,
             exec_time=scrape_payload.get('exec_time')
         )
-        
 
 
 
