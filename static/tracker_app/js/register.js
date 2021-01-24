@@ -13,22 +13,21 @@ function displayDesiredPrice() {
 // document.getElementById("submit").addEventListener("click", displaySpinner);
 
 
-function displaySpinner() {
-    // alert('doing it')
+function displayProgressBar() {
     const submitButton = document.getElementById('submit')
-    submitButton.disabled = true
-    submitButton.innerHTML = "<span class='spinner-grow text-light' role='status'></span>Scanning the item... Please wait..."
-    // const progressBarWrapper = document.getElementById('scrape-progress-wrapper')
-    // const progressBar = document.getElementById('scrape-progress')
+    // submitButton.disabled = true
+    // submitButton.innerHTML = "<span class='spinner-grow text-light' role='status'></span>Scanning the item... Please wait..."
+    const progressBarWrapper = document.getElementById('progress-wrapper')
+    const progressBar = document.getElementById('progress-bar')
 
-    // submitButton.style.display = 'none'
-    // progressBarWrapper.style.display = 'block'
+    submitButton.style.display = 'none'
+    progressBarWrapper.style.display = 'block'
 
-    // let curProgress = 0
-    // const interval = setInterval(() => {
-    //     curProgress += 1
-    //     progressBar.style.width = `${curProgress}%`
-    //     progressBar.setAttribute('aria-valuenow', curProgress)
-    //     if (current_progress >= 100) return;
-    // }, 100);
+    let curProgress = 0
+    const interval = setInterval(() => {
+        curProgress += 1
+        progressBar.style.width = `${curProgress}%`
+        progressBar.setAttribute('aria-valuenow', curProgress)
+        if (curProgress >= 100) return;
+    }, 100);
 }
