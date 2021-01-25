@@ -15,19 +15,29 @@ function displayDesiredPrice() {
 
 function displayProgressBar() {
     const submitButton = document.getElementById('submit')
-    // submitButton.disabled = true
-    // submitButton.innerHTML = "<span class='spinner-grow text-light' role='status'></span>Scanning the item... Please wait..."
-    const progressBarWrapper = document.getElementById('progress-wrapper')
-    const progressBar = document.getElementById('progress-bar')
 
-    submitButton.style.display = 'none'
-    progressBarWrapper.style.display = 'block'
-
-    let curProgress = 0
-    const interval = setInterval(() => {
-        curProgress += 1
-        progressBar.style.width = `${curProgress}%`
-        progressBar.setAttribute('aria-valuenow', curProgress)
-        if (curProgress >= 100) return;
-    }, 100);
+    if (isMobile()) {
+        submitButton.disabled = true
+        submitButton.innerHTML = "scanning the item... please wait..."
+    } else {
+        const progressBarWrapper = document.getElementById('progress-wrapper')
+        const progressBar = document.getElementById('progress-bar')
+    
+        progressBarWrapper.style.display = 'block'
+    
+        let curProgress = 0
+        const interval = setInterval(() => {
+            curProgress += 1
+            progressBar.style.width = `${curProgress}%`
+            progressBar.setAttribute('aria-valuenow', curProgress)
+            if (curProgress >= 100) return
+        }, 100)
+    }
 }
+
+function isMobile() {
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        return true
+    }
+    return false
+};
