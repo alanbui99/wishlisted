@@ -24,8 +24,12 @@ class Command(BaseCommand):
             all_items = Item.objects.filter(unsubscribed=False)
             if len(all_items) > 0:
                 for item in all_items:
-                    payload = self.scrape_and_email(item)
-                    self.record(item, payload)
+                    try:
+                        payload = self.scrape_and_email(item)
+                        self.record(item, payload)
+                    except Exception as e:
+                        print(str(e))
+                        continue
             else:
                 print('no item to track')
         except Exception as e: 
