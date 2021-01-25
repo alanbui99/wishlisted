@@ -7,7 +7,6 @@ from .models import Item
 from .forms import ItemForm
 from django.contrib.auth.models import User
 
-
 # Create your views here.
 def home(request):
     return render(request, 'tracker_app/home.html')
