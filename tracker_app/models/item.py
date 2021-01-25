@@ -40,7 +40,7 @@ class Item(models.Model):
             user = User.objects.create_user(email_input)
             
         #initialize new_item
-        new_item = Item.objects.create(
+        new_item = Item (
             url=form_data.get('url'),
             notify_when=form_data.get('notify_when'),
             desired_price=form_data.get('desired_price'),
@@ -63,7 +63,7 @@ class Item(models.Model):
         new_item.save()
 
         #send notification email if current price is already below desired price
-        if new_item.notify_when == 'below' and new_item.init_price < new_item.desired_price:
+        if new_item.notify_when == 'below' and float(new_item.init_price) < float(new_item.desired_price):
             try:
                 send_notify_mail(new_item, scrape_payload)
             except Exception as e:

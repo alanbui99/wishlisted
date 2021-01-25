@@ -44,13 +44,13 @@ class Command(BaseCommand):
                 payload = scraper.do_scrape(start_time)
             if not payload: return
             
-            if item.notify_when == 'below' and payload.get('current_price') < item.desired_price:
+            if item.notify_when == 'below' and float(payload.get('current_price')) < float(item.desired_price):
                 send_notify_mail(item, payload)
 
-            elif item.notify_when == 'down' and payload.get('current_price') < item.init_price:
+            elif item.notify_when == 'down' and float(payload.get('current_price')) < float(item.init_price):
                 send_notify_mail(item, payload)
             
-            elif item.notify_when == 'change' and payload.get('current_price') != item.init_price:
+            elif item.notify_when == 'change' and float(payload.get('current_price')) != float(item.init_price):
                 send_notify_mail(item, payload)
 
             return payload
@@ -63,7 +63,7 @@ class Command(BaseCommand):
             if not payload: 
                 item.record_set.create(failed=True)
                 return
-                
+
             item.record_set.create(
                 price=payload.get('current_price'), 
                 emailed = payload.get('emailed'),
