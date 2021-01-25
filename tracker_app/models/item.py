@@ -25,7 +25,15 @@ class Item(models.Model):
     init_price = models.DecimalField(max_digits=20, decimal_places=2, null=True)
     landing_image = models.URLField(max_length=500, null=True)
     date_registered = models.DateTimeField(default=timezone.now)
+    unsubscribed = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        #for url constructing purpose
+        unique_together = (
+            'user',
+            'date_registered',
+        )
 
     def __str__(self):
         return str(self.title)
@@ -82,6 +90,17 @@ class Item(models.Model):
             first_scrape = is_first_time,
             exec_time=scrape_payload.get('exec_time')
         )
+
+    @staticmethod
+    def unsubscribe(item_id):
+        item = Item.objects.filter(id=item_id).first()
+        if not item: return
+        item.unsubscribed = True
+        item.save()
+        return item
+        
+
+
 
 
 

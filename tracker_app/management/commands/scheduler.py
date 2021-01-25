@@ -21,7 +21,7 @@ class Command(BaseCommand):
     def track_all(self):
         print('scraping...')
         try:
-            all_items = Item.objects.all()
+            all_items = Item.objects.filter(unsubscribed=False)
             if len(all_items) > 0:
                 for item in all_items:
                     payload = self.scrape_and_email(item)

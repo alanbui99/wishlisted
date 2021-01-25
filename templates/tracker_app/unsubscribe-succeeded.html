@@ -1,0 +1,40 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title%} Unsubscribe Successful {% endblock %}
+
+{% block content%}
+<div class="row bg-gray">
+    <section class="col-md-3 d-none d-md-flex flex-column justify-content-center">
+        <img src="{% static 'tracker_app/images/kingdom-unsubscribe.png' %}" 
+        class="img-fluid" style="max-height: 60%">
+    </section>
+    <section class="col-md-6">
+        <div class="card m-auto form-holder has-shadow" style="max-width: 32rem;">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">
+                    <img src="https://img.icons8.com/fluent/48/000000/unsubscribe.png"/>
+                    Unsubscribe Successful
+                </h4>
+            </div>
+            <div class="card-body text-center">
+                <div class="card-title lead">
+                    You will get no more email notifications for this item:
+                </div>
+                {% if item.landing_image %}
+                <div class="d-flex justify-content-center">
+                    <img class="card-img-top" style="max-height: 300px; max-width: 200px"
+                    src="{{ item.landing_image }}" alt="Landing image">
+                </div>
+                {% endif %}
+                <p class="card-text"><i>{{ item.title }}</i></p>
+            </div>
+        </div>
+    </section>
+    <section class="col-md-3 d-none d-md-flex flex-column justify-content-center">
+        <img src="{% static 'tracker_app/images/mirage-unsubscribe.png' %}" 
+        class="img-fluid" style="max-height: 60%">
+    </section>
+</div>
+
+{% endblock%}

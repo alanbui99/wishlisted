@@ -5,6 +5,8 @@ from urllib.parse import urlencode
 
 from .models import Item
 from .forms import ItemForm
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 def home(request):
@@ -27,9 +29,10 @@ def confirm(request):
     print(item)
     return render(request, 'tracker_app/confirm.html', {'item': item})
 
-def unsubscribe(request):
-    pass
-    
+def unsubscribe(request, item_id):
+    item = Item.unsubscribe(item_id)
+    if not item: return render(request, 'tracker_app/unsubscribe-failed.html')
+    return render(request, 'tracker_app/unsubscribe-succeeded.html', {'item': item})
 
 def tracking_error(request):
     return render(request, 'tracker_app/tracking-error.html')

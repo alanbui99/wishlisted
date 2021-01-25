@@ -277,7 +277,7 @@
 
                     <tr>
                         <td align="center">
-                            <a style="font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;color: #5caad2; text-decoration: none;font-weight:bold;" href="{{UnsubscribeURL}}">View price changes</a>
+                            <a style="font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;color: #5caad2; text-decoration: none;font-weight:bold;" href="#">View price changes</a>
                         </td>
                     </tr>
 
@@ -313,7 +313,11 @@
                             <table border="0" align="left" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="container590">
                                 <tr>
                                     <td align="center">
-                                        <a style="font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;color: #5caad2; text-decoration: none;" href="{{UnsubscribeURL}}">Unsubscribe from this item</a>
+                                        <form action="http://localhost:8000/unsubscribe/" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id" value="1234">
+                                            <button style="font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;color: #5caad2; text-decoration: none;" type="submit">Unsubscribe from this item</button>
+                                        </form>
                                     </td>
                                 </tr>
 

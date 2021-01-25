@@ -1,0 +1,20 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title%} Unsubscribe Failed {% endblock %}
+
+{% block content%}
+<section class="bg-gray">
+    <div class="col-md-8 mx-auto text-center">
+        <img src="https://img.icons8.com/officel/80/000000/broken-link.png"/>
+        <h3 class="mb-4">This item does not exist.</h3>
+        <a href="{% url 'home' %}" class="btn btn-primary btn-shadow btn-gradient mb-2">
+            Go to Homepage
+        </a>
+        <a href="{% url 'home' %}" class="btn btn-outline-primary mb-2">
+            Report issue
+        </a>
+    </div>    
+</section>
+
+{% endblock%}
