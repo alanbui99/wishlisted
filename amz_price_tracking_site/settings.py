@@ -29,7 +29,10 @@ SECRET_KEY = '_x$usfwp2!1hjbwlclf7qz!bbzyamq&g812wg^@a%p+8xgawkg'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'https://amazontrack.herokuapp.com/'
+    'https://amazontrack.herokuapp.com/',
+    '192.34.56.54',
+    'wishlisted.me',
+    'www.wishlisted.me'
 ]
 
 EMAIL_HOST = 'smtp.gmail.com'
@@ -86,8 +89,12 @@ WSGI_APPLICATION = 'amz_price_tracking_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'wishlisted',
+	'USER': 'alanbui',
+	'PASSWORD': 'Disboyfc@wishlisted',
+	'HOST': 'localhost',
+	'PORT': '5432',
     }
 }
 
@@ -129,9 +136,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS= [
-    os.path.join(BASE_DIR, "static"),
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_DIRS = [
+	os.path.join(BASE_DIR, 'staticfiles'),
 ]
+
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_URL = '/media/'
+
 
 django_heroku.settings(locals())
 
