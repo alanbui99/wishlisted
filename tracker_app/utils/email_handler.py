@@ -1,10 +1,12 @@
 import time
 import random
+from os import getenv
 
 from django.conf import settings
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
+
 
 def send_notify_mail(item, scrape_payload):
     while not scrape_payload.get('emailed'):
@@ -16,7 +18,7 @@ def send_notify_mail(item, scrape_payload):
                 'landing_image': item.landing_image,
                 'current_price': scrape_payload.get('current_price'),
                 'item_url': item.url,
-                'unsubscribe_url': 'https://amazontrack.herokuapp.com/unsubscribe/{id}'.format(id=item.id)
+                'unsubscribe_url': '{host}/unsubscribe/{id}'.format(host= getenv('PROD_HOST', 'localhost:8000'),id=item.id)
             }
 
             subject_start = 'Price change for ' if item.notify_when == 'change' else 'Lower price for '
