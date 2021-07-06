@@ -21,13 +21,13 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = '_x$usfwp2!1hjbwlclf7qz!bbzyamq&g812wg^@a%p+8xgawkg'
+SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEV", True)
 
 ALLOWED_HOSTS = [
     os.getenv("AWS_HOST", 'localhost'),
+    os.getenv("PROD_HOST"),
     'wishlisted.me',
     'www.wishlisted.me'
 ]
@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'wishlisted.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'alanbui',
-        'PASSWORD': 'Disboyfc$wishlisted',
-        'HOST': 'wishlisted-db.c71q6marshyk.us-east-1.rds.amazonaws.com',
-        'PORT': '5432'
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
     }
 }
 
@@ -133,8 +133,8 @@ STATICFILES_DIRS = [
 ]
 
 # Email
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'abui.projects@gmail.com'
-EMAIL_HOST_PASSWORD = 'Disboyfc@projects'
-EMAIL_PORT = 587
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = True
