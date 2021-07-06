@@ -1,0 +1,66 @@
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
+}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+    height: 100%;
+    background-color: rgb(253, 253, 253);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Raleway', sans-serif;
+}
+
+/*
+ * Header
+ */
+.masthead {
+  margin-bottom: 2rem;
+}
+
+/*
+ * Footer
+ */
+.mastfoot {
+  color: rgba(255, 255, 255, .5);
+}
+
+@media only screen and (max-width: 600px) {
+  .motto {
+    text-align: center;
+    font-size: 1.25rem !important;
+    margin-top: 0.25rem !important;
+  }
+
+  .intro-text {
+    font-size: 0.6rem !important;
+  }
+
+  #logo {
+    font-size: 1.75rem;
+  }
+
+  #home-illustration {
+    width: 70%;
+  }
+}
+
+
+.errorlist
+{
+    color: red;
+}
