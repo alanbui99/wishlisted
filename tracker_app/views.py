@@ -1,12 +1,14 @@
+from urllib.parse import urlencode
+from json import dumps
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from urllib.parse import urlencode
 
 from .models import Item
+from .models import Record
 from .forms import ItemForm
 from .forms import EmailForm
-from django.contrib.auth.models import User
 
 def home(request):
     return render(request, 'tracker_app/home.html')
@@ -52,8 +54,9 @@ def item_list(request):
     items = Item.get_items_by_email(email)
     return render(request, 'tracker_app/item-list.html', {'form': EmailForm(value=email), 'items': items, 'email': email})
 
-def item(request):
-    return HttpResponse('item')
-
+def item(request, item_id):
+    item = Item.objects.filter(id=item_id).first()
+    dates, prices = Record.get_item_chart_data(item)
+    return render(request, 'tracker_app/item-details.html', {'item': item, 'dates': dumps(dates), 'prices': dumps(prices)})
 def tracking_error(request):
     return render(request, 'tracker_app/tracking-error.html')
