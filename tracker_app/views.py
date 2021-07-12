@@ -14,7 +14,7 @@ def home(request):
     return render(request, 'tracker_app/home.html')
 
 def register(request):
-    form = ItemForm(request.POST or None)
+    form = ItemForm(email=request.session.get('email') or '')
     if form.is_valid():
         new_item_id = Item.register(form.cleaned_data)
         if not new_item_id:
@@ -58,5 +58,6 @@ def item(request, item_id):
     item = Item.objects.filter(id=item_id).first()
     dates, prices = Record.get_item_chart_data(item)
     return render(request, 'tracker_app/item-details.html', {'item': item, 'dates': dumps(dates), 'prices': dumps(prices)})
+
 def tracking_error(request):
     return render(request, 'tracker_app/tracking-error.html')
