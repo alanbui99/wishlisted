@@ -14,7 +14,8 @@ def home(request):
     return render(request, 'tracker_app/home.html')
 
 def register(request):
-    form = ItemForm(email=request.session.get('email') or '')
+    cached_email = request.session.get('email') or ''
+    form = ItemForm(request.POST or None, initial={'email': cached_email})
     if form.is_valid():
         new_item_id = Item.register(form.cleaned_data)
         if not new_item_id:
@@ -47,12 +48,12 @@ def item_list(request):
     if(request.method == 'POST'):
         request.session['email'] = request.POST.get('email')
 
-    email = request.session.get('email')
-    if not email:
+    cached_email = request.session.get('email')
+    if not cached_email:
         return render(request, 'tracker_app/item-list.html', {'form': EmailForm(), 'email': None})
 
-    items = Item.get_items_by_email(email)
-    return render(request, 'tracker_app/item-list.html', {'form': EmailForm(value=email), 'items': items, 'email': email})
+    items = Item.get_items_by_email(cached_email)
+    return render(request, 'tracker_app/item-list.html', {'form': EmailForm(initial={'email': cached_email}), 'items': items, 'email': cached_email})
 
 def item(request, item_id):
     item = Item.objects.filter(id=item_id).first()
