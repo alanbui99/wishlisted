@@ -44,8 +44,9 @@ class ItemForm(forms.Form):
             raise forms.ValidationError("URL Must be from www.amazon.com")
         path = path.split('ref')[0]
         sanitized_url = 'https://' + domain + path
-        print(sanitized_url)
         return sanitized_url
-        
 
-
+class EmailForm(forms.Form):        
+    email = forms.EmailField(widget=forms.EmailInput(attrs= {
+        'placeholder':'Enter Your Email Address',
+    }))

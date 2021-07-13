@@ -98,6 +98,12 @@ class Item(models.Model):
         item.unsubscribed = True
         item.save()
         return item
+    
+    @staticmethod
+    def get_items_by_email(email):
+        user = User.objects.filter(username=email).first()
+        items = Item.objects.filter(user=user)
+        return items
         
 
 
