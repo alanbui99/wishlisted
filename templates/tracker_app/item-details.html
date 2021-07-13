@@ -1,0 +1,63 @@
+{% extends './base.html' %} {% load static %}
+
+{% block title%} Item details {% endblock %} 
+
+{% block content %}
+<section class="container pt-5 text-center">
+    {% load limit_len_filter %}
+    <a href={{item.url}} target="_blank">
+        <h4>{{item.title|limit_len:50}}</h4>
+    </a>
+    <div class="row mt-3">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <article class="card d-flex justify-content-center">
+                <div class="card-body">
+                    <canvas id="itemPriceChart"></canvas>
+                </div>    
+            </article>        
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const dates = JSON.parse("{{dates|escapejs}}")
+    const prices = JSON.parse("{{prices|escapejs}}")
+    const desired_price = parseFloat("{{item.desired_price}}")
+
+    const data = {
+        labels: dates,
+        datasets: [{
+            label: 'actual price',
+            backgroundColor: "#5989e5",
+            borderColor: "#5989e5",
+            pointRadius: 5,
+            data: prices
+        }]
+    }
+
+    if (desired_price) {
+        data.datasets.push({
+            label: 'desired price',
+            backgroundColor: "#198754",
+            borderColor: "#198754",
+            pointRadius: 1,
+            data: Array(dates.length).fill(desired_price)
+        })
+    }
+
+    const config = {
+        type: 'line',
+        data,
+    };
+    
+    const itemPriceChart = new Chart(
+        document.getElementById('itemPriceChart'),
+        config
+    );
+  </script>
+{% endblock %}
