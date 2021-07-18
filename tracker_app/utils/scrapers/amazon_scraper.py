@@ -69,13 +69,10 @@ class AmazonScraper:
 
         try:
             page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=1)
-            print(page)
-            print(page.stats_code)
             if page.status_code == 200:
                 self.response = BeautifulSoup(page.content, 'lxml')                
                 print('WORKING', proxy)
         except Exception as e:
-            print(str(e))
             pass
                 
     def get_item_payload(self, payload):
