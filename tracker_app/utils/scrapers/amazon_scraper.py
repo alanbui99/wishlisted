@@ -28,7 +28,6 @@ class AmazonScraper:
                 executor.map(self.send_request, proxylist)
             
             payload = {'title': None, 'current_price': None, 'landing_image': None, 'emailed': False}
-
             if self.response.find(id='productTitle') or self.response.find('span', attrs={'class': 'qa-title-text'}):
                 #for books
                 if self.response.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}): 
@@ -53,7 +52,10 @@ class AmazonScraper:
 
 
     def send_request(self, proxy):
-        if self.response: return #stop trying out different proxies once response received
+        if self.response is not None:
+            #stop trying out different proxies once response received
+            return 
+        
         headers = {
             "User-Agent": fake.user_agent(), 
             "Accept-Encoding":"gzip, deflate, br", 
