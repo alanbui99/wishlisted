@@ -52,7 +52,7 @@ class AmazonScraper:
 
 
     def send_request(self, proxy):
-        print('HELLO')
+        print('HELLO', self.response)
         if self.response: return #stop trying out different proxies once response received
         headers = {
             "User-Agent": fake.user_agent(), 
