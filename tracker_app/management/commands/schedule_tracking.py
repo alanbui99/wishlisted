@@ -1,5 +1,4 @@
 import time
-import schedule
 
 from django.core.management.base import BaseCommand
 from tracker_app.models import Item
@@ -8,19 +7,10 @@ from tracker_app.utils.email_handler import send_notify_mail
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print('cronjob executed')
-        # schedule.every().day.at("00:00").do(self.track_all)
-        # schedule.every().day.at("06:00").do(self.track_all)
-        # schedule.every().day.at("12:00").do(self.track_all)
-        # schedule.every().day.at("18:00").do(self.track_all)
-        # while True:
-        #     schedule.run_pending()
-        #     time.sleep(1)
-            # run every 6 hour
-            
+        self.track_all()
     
     def track_all(self):
-        print('scraping...')
+        print('scheduled_tracking...')
         try:
             all_items = Item.objects.filter(unsubscribed=False)
             if len(all_items) > 0:
