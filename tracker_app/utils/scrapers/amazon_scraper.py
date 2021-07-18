@@ -22,14 +22,12 @@ class AmazonScraper:
             print('scraping item...')
             #get a list from free proxies
             proxylist = get_proxies()
-            print(proxylist)
 
             #use multi-threading to try proxies until some work
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 executor.map(self.send_request, proxylist)
             
             payload = {'title': None, 'current_price': None, 'landing_image': None, 'emailed': False}
-            print(self.response)
             if self.response.find(id='productTitle') or self.response.find('span', attrs={'class': 'qa-title-text'}):
                 #for books
                 if self.response.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}): 
@@ -68,6 +66,8 @@ class AmazonScraper:
 
         try:
             page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=1)
+            print(page)
+            print(page.status_code)
             if page.status_code == 200:
                 self.response = BeautifulSoup(page.content, 'lxml')                
                 print('WORKING', proxy)
