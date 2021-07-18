@@ -1,1 +1,1 @@
-web: gunicorn amz_price_tracking_site.wsgi
+web: gunicorn wishlisted.wsgi
