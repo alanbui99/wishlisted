@@ -1,0 +1,79 @@
+{% extends './base.html' %} {% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block title%} Email input {% endblock %} 
+
+{% block content%}
+<section class="container email-input text-center p-5">
+  <h2>View tracked items</h2>
+  <p class="lead">See price changes of items you have been tracking</p>
+  <form method="POST">
+    {% csrf_token %} 
+    {% for field in form %} 
+    
+    {% if field.errors %}
+    <p class="text-danger">{{ field.errors.as_text }}</p>
+    {% endif %}
+
+    <div class="form-group">
+      {{ field }}
+      <button type="submit" class="btn btn-primary btn-gradient submit">
+        View
+      </button>
+    </div>
+    {% endfor %}
+  </form>
+</section>
+
+{% if email %}
+<section class="container px-5 pt-0 pb-5">
+  {% if items|length > 0 %}
+  <table id="item_list" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+      <tr>
+          <th>Platform</th>
+          <th>Item</th>
+          <th>Date registered</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% load limit_len_filter %}
+      {% for item in items %}
+      <tr>
+        <td>amazon.com</td>
+        <td><a href="{% url 'item' item.id %}">{{ item.title|limit_len:80}}</a></td>
+        <td>{{ item.date_registered|date:"M d, Y" }}</td>
+      </tr>
+      {% endfor %}    
+    </tbody>
+  </table>
+  {% elif items|length == 0 %}
+  <div class="text-center">
+    <img src="{% static 'tracker_app/icons/no-data.svg' %}" width="124px" alt="no-data"/>
+    <p class="lead my-3">No item tracked with this email</p>
+    <a href="{% url 'home' %}" class="btn btn-outline-primary">
+        Go to Homepage
+    </a>
+  </div>
+{% endif %}
+</section>
+{% endif %}
+
+{% endblock%} 
+
+{% block scripts %}
+<script
+  type="text/javascript"
+  src="{% static 'tracker_app/js/register.js' %}"
+></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#item_list').DataTable();
+  });
+</script>
+{% endblock %}
