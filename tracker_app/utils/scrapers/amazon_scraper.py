@@ -75,6 +75,7 @@ class AmazonScraper:
                 self.response = BeautifulSoup(page.content, 'lxml')                
                 print('WORKING', proxy)
         except Exception as e:
+            print(str(e))
             pass
                 
     def get_item_payload(self, payload):
