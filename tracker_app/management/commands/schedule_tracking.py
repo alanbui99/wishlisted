@@ -1,4 +1,5 @@
 import time
+import concurrent.futures
 
 from django.core.management.base import BaseCommand
 from tracker_app.models import Item
@@ -14,19 +15,21 @@ class Command(BaseCommand):
         try:
             all_items = Item.objects.filter(unsubscribed=False)
             if len(all_items) > 0:
-                for item in all_items:
-                    try:
-                        payload = self.scrape_and_email(item)
-                        self.record(item, payload)
-                    except Exception as e:
-                        print(str(e))
-                        continue
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    executor.map(self.track_each, all_items)
             else:
                 print('no item to track')
         except Exception as e: 
             print(str(e))
 
         print('sleeping...')
+
+    def track_each(self, item):
+        try:
+            payload = self.scrape_and_email(item)
+            self.record(item, payload)
+        except Exception as e:
+            print(str(e))
 
     def scrape_and_email(self, item):
         try:
