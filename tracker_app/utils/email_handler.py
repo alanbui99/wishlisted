@@ -18,6 +18,7 @@ def send_notify_mail(item, scrape_payload):
                 'landing_image': item.landing_image,
                 'current_price': scrape_payload.get('current_price'),
                 'item_url': item.url,
+                'item_details_url': '{host}/item/{id}'.format(host= getenv('PROD_HOST', 'localhost:8000'),id=item.id),
                 'unsubscribe_url': '{host}/unsubscribe/{id}'.format(host= getenv('PROD_HOST', 'localhost:8000'),id=item.id)
             }
 
