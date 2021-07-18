@@ -12,7 +12,9 @@ def get_proxies():
         cells = row.find_all('td')
         ip = cells[0].get_text().strip()
         port = cells[1].get_text().strip()
-        proxy = ip + ':' + port
+        proxy = 'https://' + ip + ':' + port
         # print(proxy,cells[7].get_text())
         proxies.append(proxy)
+    
+    print(proxies)
     return proxies
