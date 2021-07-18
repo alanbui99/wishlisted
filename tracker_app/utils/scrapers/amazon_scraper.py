@@ -52,6 +52,7 @@ class AmazonScraper:
 
 
     def send_request(self, proxy):
+        print('HELLO')
         if self.response: return #stop trying out different proxies once response received
         headers = {
             "User-Agent": fake.user_agent(), 
@@ -66,8 +67,6 @@ class AmazonScraper:
 
         try:
             page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=1)
-            print(page)
-            print(page.status_code)
             if page.status_code == 200:
                 self.response = BeautifulSoup(page.content, 'lxml')                
                 print('WORKING', proxy)
