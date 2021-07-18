@@ -16,5 +16,4 @@ def get_proxies():
         # print(proxy,cells[7].get_text())
         proxies.append(proxy)
     
-    print(proxies)
     return proxies
