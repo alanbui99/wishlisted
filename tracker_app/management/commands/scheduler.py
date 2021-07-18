@@ -8,13 +8,14 @@ from tracker_app.utils.email_handler import send_notify_mail
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        schedule.every().day.at("00:00").do(self.track_all)
-        schedule.every().day.at("06:00").do(self.track_all)
-        schedule.every().day.at("12:00").do(self.track_all)
-        schedule.every().day.at("18:00").do(self.track_all)
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
+        print('cronjob executed')
+        # schedule.every().day.at("00:00").do(self.track_all)
+        # schedule.every().day.at("06:00").do(self.track_all)
+        # schedule.every().day.at("12:00").do(self.track_all)
+        # schedule.every().day.at("18:00").do(self.track_all)
+        # while True:
+        #     schedule.run_pending()
+        #     time.sleep(1)
             # run every 6 hour
             
     
