@@ -10,29 +10,23 @@ function displayDesiredPrice() {
     desiredPrice.required = isBelowChoice.checked ? true : false
 }
 
-// function displaySpinner() {
-//     const submitState = document.getElementById('submit-state')
-//     submitState.innerHTML = `
-//     <div class="spinner-border text-primary" role="status">
-//         <span class="sr-only">Loading...</span>
-//     </div>
-//     `
 
-// }
-
-function displayProgressBar() {
+function displayLoading() {
     const submitState = document.getElementById('submit-state')
     submitState.innerHTML = `
-    <div class="progress w-100" id="progress-bar-wrapper" style="height: 30px;">
+    <div class="d-none d-xl-flex progress w-100" id="progress-bar-wrapper" style="height: 30px;">
         <div class="progress-bar progress-bar-striped progress-bar-animated" 
             id="progress-bar" role="progressbar" style="width: 0%; font-size: 1rem;" 
             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
             Scanning ...
         </div>
     </div>
+
+    <div class="d-flex d-xl-none spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
     `
 
-    // const progressBarWrapper = document.getElementById('progress-bar-wrapper')
     const progressBar = document.getElementById('progress-bar')
 
     let curProgress = 0

@@ -21,7 +21,7 @@
                 </h4>
             </div>
             <div class="card-body form-group">
-                <form method="POST" onsubmit="displayProgressBar()">
+                <form method="POST" onsubmit="displayLoading()">
                     {% csrf_token %}
                     {% for field in form %}
                         {% if field.errors %}
