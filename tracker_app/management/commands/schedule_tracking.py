@@ -12,6 +12,8 @@ class Command(BaseCommand):
     
     def track_all(self):
         print('scheduled_tracking...')
+        start_time=time.time()
+        
         try:
             all_items = Item.objects.filter(unsubscribed=False)
             if len(all_items) > 0:
@@ -22,7 +24,7 @@ class Command(BaseCommand):
         except Exception as e: 
             print(str(e))
 
-        print('sleeping...')
+        print('finished scheduled tracking in {duration} seconds'.format(duration = time.time() - start_time))
 
     def track_each(self, item):
         try:
@@ -42,6 +44,7 @@ class Command(BaseCommand):
                 payload = scraper.do_scrape(start_time)
             if not payload: return
             
+            #email
             if item.notify_when == 'below' and float(payload.get('current_price')) < float(item.desired_price):
                 send_notify_mail(item, payload)
 
