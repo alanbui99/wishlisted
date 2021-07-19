@@ -1,4 +1,5 @@
 import time
+import concurrent.futures
 
 from django.core.management.base import BaseCommand
 from tracker_app.models import Item
@@ -11,22 +12,26 @@ class Command(BaseCommand):
     
     def track_all(self):
         print('scheduled_tracking...')
+        start_time=time.time()
+        
         try:
             all_items = Item.objects.filter(unsubscribed=False)
             if len(all_items) > 0:
-                for item in all_items:
-                    try:
-                        payload = self.scrape_and_email(item)
-                        self.record(item, payload)
-                    except Exception as e:
-                        print(str(e))
-                        continue
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    executor.map(self.track_each, all_items)
             else:
                 print('no item to track')
         except Exception as e: 
             print(str(e))
 
-        print('sleeping...')
+        print('finished scheduled tracking in {duration} seconds'.format(duration = time.time() - start_time))
+
+    def track_each(self, item):
+        try:
+            payload = self.scrape_and_email(item)
+            self.record(item, payload)
+        except Exception as e:
+            print(str(e))
 
     def scrape_and_email(self, item):
         try:
@@ -39,6 +44,7 @@ class Command(BaseCommand):
                 payload = scraper.do_scrape(start_time)
             if not payload: return
             
+            #email
             if item.notify_when == 'below' and float(payload.get('current_price')) < float(item.desired_price):
                 send_notify_mail(item, payload)
 
