@@ -97,7 +97,6 @@ strong {
   background-image: -webkit-gradient(linear, left top, right top, from(#5989e5), to(#37cfdc));
   background-image: linear-gradient(to right, #5989e5, #37cfdc);
   border: none !important;
-  text-transform: uppercase;
   color: #fff;
   overflow: hidden;
   position: relative;

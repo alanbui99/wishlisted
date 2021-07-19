@@ -89,7 +89,7 @@ class AmazonScraper:
                     continue
             payload['current_price'] = float(price_str[1:].replace(',',''))
             try:
-                payload['landing_image'] = self.response.find(id= 'landingImage').get('data-old-hires').strip()
+                payload['landing_image'] = self.response.find(id= 'landingImage').get('src').strip()
             except:
                 print(str(e))
 
