@@ -6,7 +6,7 @@ def get_proxies():
     url = 'https://www.us-proxy.org/'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'lxml')
-    table = soup.find(id='proxylisttable')
+    table = soup.find('table', attrs={'class': 'table table-striped table-bordered'})
     rows = table.find_all('tr')
     for row in rows[1:-1]:
         cells = row.find_all('td')

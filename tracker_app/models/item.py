@@ -59,7 +59,10 @@ class Item(models.Model):
         start_time=time.time()
         scrape_payload = None
         #retry until success or timeout
+        scraper_count = 0
         while scrape_payload is None and time.time() - start_time < 20:
+            scraper_count += 1
+            print('new AmazonScraper started', scraper_count)
             scraper = AmazonScraper(new_item)
             scrape_payload = scraper.do_scrape(start_time)
         if not scrape_payload: return
