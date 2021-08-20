@@ -78,53 +78,40 @@ class AmazonScraper:
             pass
                 
     def get_item_payload(self, payload):
-        try:
-            payload['title'] = self.response.find(id = 'productTitle').get_text().strip().encode('ascii', 'replace').decode()
-            #possible ids of html tag with item price
-            possible_ids = ['priceblock_ourprice', 'priceblock_saleprice', 'priceblock_dealprice', 'rentPrice'] 
-            for id in possible_ids:
-                try:
-                    # extract item price
-                    price_str = self.response.find(id=id).get_text().strip()
-                    if price_str: break
-                except Exception as e:
-                    continue
-            payload['current_price'] = float(price_str[1:].replace(',',''))
+        payload['title'] = self.response.find(id = 'productTitle').get_text().strip().encode('ascii', 'replace').decode()
+        #possible ids of html tag with item price
+        possible_ids = ['priceblock_ourprice', 'priceblock_saleprice', 'priceblock_dealprice', 'rentPrice'] 
+        for id in possible_ids:
             try:
-                payload['landing_image'] = self.response.find(id= 'landingImage').get('src').strip()
-            except:
-                print(str(e))
-
-        except Exception as e:
+                # extract item price
+                price_str = self.response.find(id=id).get_text().strip()
+                if price_str: break
+            except Exception as e:
+                continue
+        payload['current_price'] = float(price_str[1:].replace(',',''))
+        try:
+            payload['landing_image'] = self.response.find(id= 'landingImage').get('src').strip()
+        except:
             print(str(e))
-            return
 
     def get_book_payload(self, payload):
-        try:
-            payload['title'] = self.response.find(id = 'productTitle').get_text().strip().encode('ascii', 'replace').decode()
-            price_str = self.response.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}).get_text().strip()
-            payload['current_price'] = float(price_str[1:].replace(',',''))
-            valid_book_image_ids = ['imgBlkFront', 'ebooksImgBlkFront']
-            for id in valid_book_image_ids:
-                try:
-                    payload['landing_image'] = self.response.find(id=id).get('src').strip()
-                    if payload.get('landing_image'): break
-                except Exception as e:
-                    print(str(e))
-                    continue
-        except Exception as e:
-            print(str(e))
-            return
-
-    def get_qa_payload(self, payload):
-        try:
-            payload['title'] = self.response.find('span', attrs={'class': 'qa-title-text'}).get_text().strip().encode('ascii', 'replace').decode()
-            price_str = self.response.find('span', attrs={'class': 'qa-price-block-our-price'}).get_text().strip()
-            payload['current_price'] = float(price_str[1:].replace(',',''))
+        payload['title'] = self.response.find(id = 'productTitle').get_text().strip().encode('ascii', 'replace').decode()
+        price_str = self.response.find('span', attrs={'class': 'a-size-base a-color-price a-color-price'}).get_text().strip()
+        payload['current_price'] = float(price_str[1:].replace(',',''))
+        valid_book_image_ids = ['imgBlkFront', 'ebooksImgBlkFront']
+        for id in valid_book_image_ids:
             try:
-                payload['landing_image'] = self.response.find('img', attrs={'class': 'mainImage'}).get('src').strip()
+                payload['landing_image'] = self.response.find(id=id).get('src').strip()
+                if payload.get('landing_image'): break
             except Exception as e:
                 print(str(e))
+                continue
+
+    def get_qa_payload(self, payload):
+        payload['title'] = self.response.find('span', attrs={'class': 'qa-title-text'}).get_text().strip().encode('ascii', 'replace').decode()
+        price_str = self.response.find('span', attrs={'class': 'qa-price-block-our-price'}).get_text().strip()
+        payload['current_price'] = float(price_str[1:].replace(',',''))
+        try:
+            payload['landing_image'] = self.response.find('img', attrs={'class': 'mainImage'}).get('src').strip()
         except Exception as e:
             print(str(e))
-            return
