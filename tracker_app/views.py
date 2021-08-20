@@ -57,7 +57,10 @@ def item_list(request):
 
 def item(request, item_id):
     item = Item.objects.filter(id=item_id).first()
-    dates, prices = Record.get_item_chart_data(item)
+    dates, prices = [], []
+    for record in Record.get_significant_records(item):
+        dates.append(record.time_stamp.strftime('%b %d'))
+        prices.append(str(record.price))
     return render(request, 'tracker_app/item-details.html', {'item': item, 'dates': dumps(dates), 'prices': dumps(prices)})
 
 def tracking_error(request):

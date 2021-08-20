@@ -20,21 +20,26 @@ class Record(models.Model):
         return str(self.item.title)
 
     @staticmethod
-    def get_item_chart_data(item):
+    def get_significant_records(item):
         records = Record.objects.filter(item=item).order_by('time_stamp')
-        dates = []
-        prices = []
-
-        # group records by date
+        lowest_records_per_date = []
+        # group records by date & get record with lowest price in a date
         for key, group in groupby(records, key= lambda x: x.time_stamp.date()):
-            prices_of_date = [record.price for record in list(group) if record.price]
-            if not prices_of_date: continue
-            dates.append(key.strftime('%b %d'))
-            # only take lowest price in the day
-            prices.append(str(min(prices_of_date)))
+            records_of_date = list(group)
+            if not records_of_date: continue
 
-        # filter out insignificant records
-        indices_to_remove = [i for i, price in enumerate(prices) if i != 0 and i != len(prices)-1 and price == prices[i-1] == prices[i+1]]
-        prices = [price for i, price in enumerate(prices) if i not in indices_to_remove]
-        dates = [date for i, date in enumerate(dates) if i not in indices_to_remove]
-        return (dates, prices)
+            lowest_price_record = None
+            lowest_price = float('inf')
+
+            for record in records_of_date:
+                if record.price and record.price < lowest_price:
+                    lowest_price_record = record
+                    lowest_price = record.price
+                    
+
+            if lowest_price_record:
+                lowest_records_per_date.append(lowest_price_record)
+
+        # significant records are first/last records or are before/in a change
+        significant_records = [record for i, record in enumerate(lowest_records_per_date) if i in [0, len(lowest_records_per_date) - 1] or not record.price == lowest_records_per_date[i-1].price == lowest_records_per_date[i+1].price]
+        return significant_records
