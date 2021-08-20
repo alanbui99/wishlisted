@@ -49,6 +49,8 @@ class AmazonScraper:
 
         except Exception as e:
             print(str(e))
+            if time.time() - start_time < 20:
+                return self.do_scrape(start_time)
 
     def send_request(self, proxy):
         if self.response is not None:
@@ -68,6 +70,7 @@ class AmazonScraper:
 
         try:
             page = requests.get(self.item.url, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=1)
+            print(page.status_code)
             if page.status_code == 200:
                 self.response = BeautifulSoup(page.content, 'lxml')                
                 print('WORKING', proxy)
