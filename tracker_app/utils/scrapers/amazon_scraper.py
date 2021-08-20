@@ -50,7 +50,6 @@ class AmazonScraper:
         except Exception as e:
             print(str(e))
 
-
     def send_request(self, proxy):
         if self.response is not None:
             #stop trying out different proxies once response received
