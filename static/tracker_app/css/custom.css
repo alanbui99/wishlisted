@@ -8,3 +8,9 @@
 {
     color: red;
 }
+
+.item-landing-image {
+    object-fit: contain;
+    max-height: 300px; 
+    max-width: 200px;
+}
