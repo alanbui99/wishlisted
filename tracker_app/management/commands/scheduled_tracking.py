@@ -36,12 +36,8 @@ class Command(BaseCommand):
     def scrape_and_email(self, item):
         try:
             #scrape
-            start_time=time.time()
-            payload = None
-            #retry until success or timeout
-            while payload is None and time.time() - start_time < 30:
-                scraper = AmazonScraper(item)
-                payload = scraper.do_scrape(start_time)
+            scraper = AmazonScraper(item)
+            payload = scraper.do_scrape(time.time())
             if not payload: return
             
             #email
