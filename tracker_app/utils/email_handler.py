@@ -9,7 +9,8 @@ from django.template import Context
 
 
 def send_notify_mail(item, scrape_payload):
-    while not scrape_payload.get('emailed'):
+    start_time = time.time()
+    while not scrape_payload.get('emailed') and start_time - time.time() < 20:
         try:
             plain_text = get_template('emails/amazon_notify_email.txt')
             html_template = get_template('emails/amazon_notify_email.html')
